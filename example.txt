@@ -1,0 +1,22 @@
+async function load(){
+  var pseudo = document.getElementById('pseudo').textContent;
+  await ajax.post('/findP4',
+    {pseudo},
+    function(response){
+      if(response == null) return;
+      var jsonResponse = JSON.parse(response);
+      var pboard =  jsonResponse.board[0].split(',').map(Number);
+      p4.turn = jsonResponse.turn;
+      p4.moves = jsonResponse.moves;
+      board = Array.from(pboard);
+      console.log(board);
+      for (let i = 0; i < p4.rows; i++) {
+        for (let j = 0; j < p4.cols; j++) {
+        p4.board[i][j] = board[(i*7)+j];
+        }
+      }
+      showCounter(p4);
+      render(p4);
+    }
+  )
+}
